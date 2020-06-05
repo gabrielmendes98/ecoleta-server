@@ -42,4 +42,6 @@ routes.post(
   pointsController.create
 );
 
+routes.delete('/points/:id', pointsController.delete);
+
 export default routes;
