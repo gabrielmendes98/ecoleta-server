@@ -20,7 +20,7 @@ class PointsController {
     const serializedPoints = points.map((point) => {
       return {
         ...point,
-        image_url: `${process.env.URL}:${process.env.PORT}/uploads/${point.image}`,
+        image_url: `${process.env.IMAGE_UPLOAD_URL}/uploads/${point.image}`,
       };
     });
 
@@ -39,7 +39,7 @@ class PointsController {
 
     const serializedPoint = {
       ...point,
-      image_url: `http://192.168.100.4:3333/uploads/${point.image}`,
+      image_url: `${process.env.IMAGE_UPLOAD_URL}/uploads/${point.image}`,
     };
 
     const items = await knex('items')
@@ -95,6 +95,20 @@ class PointsController {
     return res === 1
       ? response.json({ message: 'deleted' })
       : response.status(404).json({ message: 'point not found' });
+  }
+
+  async update(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const newPoint = request.body;
+
+    console.log(request.body);
+
+    const res = await knex('points').where({ id }).update(newPoint);
+
+    console.log(res);
+
+    return response.json(res);
   }
 }
 
