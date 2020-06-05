@@ -20,20 +20,25 @@ routes.get('/points/:id', pointsController.show);
 routes.post(
   '/points',
   upload.single('image'),
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required(),
-      email: Joi.string().required().email(),
-      whatsapp: Joi.number().required(),
-      latitude: Joi.number().required(),
-      longitude: Joi.number().required(),
-      city: Joi.string().required(),
-      uf: Joi.string().required().max(2),
-      items: Joi.string()
-        .required()
-        .regex(/^[0-9, ]*[0-9]$/),
-    }),
-  }),
+  celebrate(
+    {
+      body: Joi.object().keys({
+        name: Joi.string().required(),
+        email: Joi.string().required().email(),
+        whatsapp: Joi.number().required(),
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required(),
+        city: Joi.string().required(),
+        uf: Joi.string().required().max(2),
+        items: Joi.string()
+          .required()
+          .regex(/^[0-9, ]*[0-9]$/),
+      }),
+    },
+    {
+      abortEarly: false,
+    }
+  ),
   pointsController.create
 );
 
