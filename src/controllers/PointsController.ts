@@ -98,17 +98,37 @@ class PointsController {
   }
 
   async update(request: Request, response: Response) {
-    const { id } = request.params;
+    const point_id = request.params.id;
 
-    const newPoint = request.body;
+    const { items, ...point } = request.body;
 
-    console.log(request.body);
+    if (request.file) {
+      if (request.file.filename) {
+        point.image = request.file.filename;
+      }
+    }
 
-    const res = await knex('points').where({ id }).update(newPoint);
+    const trx = await knex.transaction();
 
-    console.log(res);
+    await trx('points').where({ id: point_id }).update(point);
 
-    return response.json(res);
+    if (items) {
+      const pointItems = items
+        .split(',')
+        .map((item: string) => Number(item.trim()))
+        .map((item_id: number) => {
+          return {
+            item_id,
+            point_id,
+          };
+        });
+
+      await trx('point_items').insert(pointItems);
+    }
+
+    await trx.commit();
+
+    return response.json({ id: point_id, ...point });
   }
 }
 

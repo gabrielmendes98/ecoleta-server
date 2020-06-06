@@ -44,6 +44,6 @@ routes.post(
 
 routes.delete('/points/:id', pointsController.delete);
 
-routes.put('/points/:id', pointsController.update);
+routes.put('/points/:id', upload.single('image'), pointsController.update);
 
 export default routes;
