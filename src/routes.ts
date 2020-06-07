@@ -44,6 +44,27 @@ routes.post(
 
 routes.delete('/points/:id', pointsController.delete);
 
-routes.put('/points/:id', upload.single('image'), pointsController.update);
+routes.put(
+  '/points/:id',
+  upload.single('image'),
+  celebrate(
+    {
+      body: Joi.object().keys({
+        name: Joi.string(),
+        email: Joi.string().email(),
+        whatsapp: Joi.number(),
+        latitude: Joi.number(),
+        longitude: Joi.number(),
+        city: Joi.string(),
+        uf: Joi.string().max(2),
+        items: Joi.string().regex(/^[0-9, ]*[0-9]$/),
+      }),
+    },
+    {
+      abortEarly: false,
+    }
+  ),
+  pointsController.update
+);
 
 export default routes;
