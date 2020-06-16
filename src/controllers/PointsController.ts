@@ -45,7 +45,8 @@ class PointsController {
     const items = await knex('items')
       .join('point_items', 'items.id', '=', 'point_items.item_id')
       .where('point_items.point_id', id)
-      .select('items.title');
+      .select('items.title')
+      .select('items.id');
 
     return response.json({ point: serializedPoint, items });
   }
@@ -122,6 +123,8 @@ class PointsController {
             point_id,
           };
         });
+
+      await trx('point_items').where({ point_id }).del();
 
       await trx('point_items').insert(pointItems);
     }
