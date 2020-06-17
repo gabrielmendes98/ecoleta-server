@@ -3,3 +3,4 @@ src/database/database.sqlite
 uploads/*
 !uploads/.gitkeep
 .env
+dist
