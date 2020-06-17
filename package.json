@@ -8,7 +8,8 @@
     "build": "tsc",
     "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts",
     "knex:migrate": "knex --knexfile knexfile.js migrate:latest",
-    "knex:seed": "knex --knexfile knexfile.js seed:run"
+    "knex:seed": "knex --knexfile knexfile.js seed:run",
+    "postinstall": "knex:migrate && knex:seed"
   },
   "keywords": [],
   "author": "",
