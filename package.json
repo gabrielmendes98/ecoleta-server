@@ -5,11 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "tsc && knex --knexfile knexfile.js migrate:latest && knex --knexfile knexfile.js seed:run",
     "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts",
     "knex:migrate": "knex --knexfile knexfile.js migrate:latest",
-    "knex:seed": "knex --knexfile knexfile.js seed:run",
-    "heroku-postbuild": "knex --knexfile knexfile.js migrate:latest && knex --knexfile knexfile.js seed:run"
+    "knex:seed": "knex --knexfile knexfile.js seed:run"
   },
   "keywords": [],
   "author": "",
